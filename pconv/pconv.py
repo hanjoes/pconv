@@ -1,4 +1,7 @@
+#!/usr/bin/python3.4
+
 __author__ = 'hanjoes'
+
 
 import sys
 import tkinter
