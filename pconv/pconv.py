@@ -105,9 +105,8 @@ class ConvGUI():
             # get output path
             last_slash_index = self.input_filename.rindex('/')
             output_path = self.input_filename[0:last_slash_index+1]
-
+            # set default output filename
             self.output_filename = output_path+output_filename
-            print(self.output_filename)
 
     def choose_output(self):
         self.output_filename = self.output_filename = filedialog.asksaveasfilename(parent=self.top_window)
