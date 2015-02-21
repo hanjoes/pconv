@@ -27,14 +27,17 @@ class conv:
 
     def convert(self):
         try:
-            output_file = open(self.output_path, 'w+', 1)
-            with codecs.open(self.input_path, 'r', self.input_encoding) as f:
+            output_file = open(self.output_path, 'wb+', 1)
+            with codecs.open(self.input_path, 'rb', self.input_encoding) as f:
                 for line in f:
                     encoded_line = codecs.encode(line, self.output_encoding)
-                    output_file.write(line)
+                    output_file.write(encoded_line)
             return True
         except ValueError:
             print('decode failed due to incorrect character encoding')
+            return False
+        except TypeError:
+            print('incompatible type')
             return False
 
 class ConvGUI():
@@ -90,6 +93,21 @@ class ConvGUI():
             encoding = cchardet.detect(rawdata)['encoding']
             self.input_filename_label['text'] = encoding
             self.input_file_encoding = encoding
+            self.output_filename_label['text'] = 'UTF-8'
+            self.output_status_label['text'] = 'Click Convert'
+
+            # build default output filename
+            l = str(self.input_filename).split('/')
+            filename = l[len(l)-1]
+            raw_name = filename[0:filename.rindex('.')]
+            suffix = filename[filename.rindex('.'):]
+            output_filename = raw_name+'_utf8'+suffix
+            # get output path
+            last_slash_index = self.input_filename.rindex('/')
+            output_path = self.input_filename[0:last_slash_index+1]
+
+            self.output_filename = output_path+output_filename
+            print(self.output_filename)
 
     def choose_output(self):
         self.output_filename = self.output_filename = filedialog.asksaveasfilename(parent=self.top_window)
